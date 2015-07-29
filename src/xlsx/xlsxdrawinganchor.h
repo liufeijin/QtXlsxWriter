@@ -75,6 +75,9 @@ public:
 
     DrawingAnchor(Drawing *drawing, ObjectType objectType);
     virtual ~DrawingAnchor();
+    void setObjectFile(const QString &filename,
+                       const QString &mimeType,
+                       const ObjectType objType);
     void setObjectPicture(const QImage &img);
     void setObjectGraphicFrame(QSharedPointer<Chart> chart);
 
