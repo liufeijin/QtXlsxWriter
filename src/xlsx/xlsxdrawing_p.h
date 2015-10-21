@@ -43,6 +43,7 @@
 #include <QList>
 #include <QString>
 #include <QSharedPointer>
+#include "xlsxdrawinganchor.h"
 
 class QIODevice;
 class QXmlStreamWriter;
@@ -65,6 +66,7 @@ public:
     AbstractSheet *sheet;
     Workbook *workbook;
     QList<DrawingAnchor *> anchors;
+    QList<XlsxShape *> shapes;
 };
 
 } // namespace QXlsx

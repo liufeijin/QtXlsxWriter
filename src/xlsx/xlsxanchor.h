@@ -1,5 +1,5 @@
 /****************************************************************************
-** Copyright (c) 2013-2014 Debao Zhang <hello@debao.me>
+** Copyright (c) 2015 AppSmiths, Inc.
 ** All right reserved.
 **
 ** Permission is hereby granted, free of charge, to any person obtaining
@@ -22,57 +22,42 @@
 ** WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 **
 ****************************************************************************/
-#ifndef XLSXABSTRACTSHEET_H
-#define XLSXABSTRACTSHEET_H
 
-#include "xlsxabstractooxmlfile.h"
-#include <QStringList>
+#pragma once
+
+#include "xlsxglobal.h"
+#include "xlsxdrawinganchor.h"
+
+#include <QPoint>
+#include <QSize>
+#include <QString>
 #include <QSharedPointer>
 
-QT_BEGIN_NAMESPACE_XLSX
-class Workbook;
-class Drawing;
-class AbstractSheetPrivate;
-class OleObject;
+class QXmlStreamReader;
+class QXmlStreamWriter;
 
-class Q_XLSX_EXPORT AbstractSheet : public AbstractOOXmlFile
+namespace QXlsx {
+
+class XlsxMarker;
+
+class Anchor
 {
-    Q_DECLARE_PRIVATE(AbstractSheet)
 public:
-    enum SheetType {
-        ST_WorkSheet,
-        ST_ChartSheet,
-        ST_DialogSheet,
-        ST_MacroSheet
-    };
 
-    enum SheetState {
-        SS_Visible,
-        SS_Hidden,
-        SS_VeryHidden
-    };
+    Anchor();
+    Anchor(int from_row, int from_column, int from_rowOffset, int from_colOffset,
+           int to_row, int to_column, int to_rowOffset, int to_colOffset);
+    virtual ~Anchor();
 
-    QString sheetName() const;
-    SheetType sheetType() const;
-    SheetState sheetState() const;
-    void setSheetState(SheetState ss);
-    bool isHidden() const;
-    bool isVisible() const;
-    void setHidden(bool hidden);
-    void setVisible(bool visible);
-
-    Workbook *workbook() const;
+    bool loadFromXml(QXmlStreamReader &reader);
+    void saveToXml(QXmlStreamWriter &writer) const;
 
 protected:
-    friend class Workbook;
-    AbstractSheet(const QString &sheetName, int sheetId, Workbook *book, AbstractSheetPrivate *d);
-    virtual AbstractSheet *copy(const QString &distName, int distId) const = 0;
-    void setSheetName(const QString &sheetName);
-    void setSheetType(SheetType type);
-    int sheetId() const;
+    XlsxMarker loadXmlMarker(QXmlStreamReader &reader, const QString &node);
+    void saveXmlMarker(QXmlStreamWriter &writer, const XlsxMarker &marker, const QString &node) const;
 
-    Drawing *drawing() const;
+    bool moveWithCells;
+    XlsxMarker from_marker, to_marker;
 };
 
-QT_END_NAMESPACE_XLSX
-#endif // XLSXABSTRACTSHEET_H
+} // namespace QXlsx
