@@ -451,6 +451,12 @@ void DrawingAnchor::saveXmlObjectPicture(QXmlStreamWriter &writer) const
     writer.writeEmptyElement(QStringLiteral("a:avLst"));
     writer.writeEndElement(); //a:prstGeom
 
+    writer.writeStartElement(QStringLiteral("a:solidFill"));
+    writer.writeStartElement(QStringLiteral("a:srgbClr"));
+    writer.writeAttribute(QStringLiteral("val"), QStringLiteral("FFFFFF")); // hard-coded to solid white background
+    writer.writeEndElement(); //a:schemeClr
+    writer.writeEndElement(); //a:solidFill
+
     writer.writeEndElement(); //xdr:spPr
 
     writer.writeEndElement(); //xdr:pic
