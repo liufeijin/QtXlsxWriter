@@ -1558,6 +1558,7 @@ void WorksheetPrivate::saveXmlOleObjects(QXmlStreamWriter &writer) const
 
     writer.writeStartElement(QStringLiteral("oleObjects"));
     QList<QSharedPointer<OleObject> > oleFiles = oleObjectFiles();
+    QList<QSharedPointer<MediaFile>> mediaFiles = workbook->mediaFiles();
 
     for (int i=0; i < oleFiles.size(); ++i) {
         QSharedPointer<OleObject> obj = oleFiles[i];
@@ -1570,7 +1571,7 @@ void WorksheetPrivate::saveXmlOleObjects(QXmlStreamWriter &writer) const
 
         QSharedPointer<MediaFile> media = obj->prMediaFile();
         if (media && media->fileName().size() > 0) {
-            media->setIndex(relationships->count());
+            media->setIndex(mediaFiles.size());
             obj->setPrIndex(media->index());
             relationships->addDocumentRelationship(QStringLiteral("/image"),
                                                    QStringLiteral("../media/image%1.%2")
